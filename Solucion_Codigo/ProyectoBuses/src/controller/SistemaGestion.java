@@ -9,7 +9,6 @@ public class SistemaGestion {
 
     private List<Ruta> rutas = new ArrayList<>();
     private List<Horario> horarios = new ArrayList<>();
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
 
     // Aqui de ejemplo añadi algunas paradas y en la ruta que iran con su respectivo horarios
     public void cargarDatosIniciales() {
@@ -25,7 +24,7 @@ public class SistemaGestion {
 
         Ruta ruta3 = new Ruta("Linea 3");
         ruta3.agregarParada(new Parada("Parada Oeste", "Av. Amazonas y Bolívar"));
-        ruta3.agregarParada(new Parada("Parada Central", "Plaza Principal"));
+        ruta3.agregarParada(new Parada("Parada Centro", "Plaza Principal"));
         rutas.add(ruta3);
 
         horarios.add(new Horario("Parada Norte", "07:00", "07:05"));
@@ -35,7 +34,6 @@ public class SistemaGestion {
         horarios.add(new Horario("Parada Oeste", "09:00", "09:05"));
         horarios.add(new Horario("Parada Central", "09:10", "09:15"));
     }
-
 
     public void mostrarRutas() {
         for (Ruta ruta : rutas) {
@@ -85,5 +83,73 @@ public class SistemaGestion {
         rutas.add(nuevaRuta);
         horarios.addAll(horariosRuta); // Añade los horarios asociados a esta ruta
     }
-    
+
+    public boolean optimizarRutaPorRedundancia(String nombreRuta) {
+        Ruta rutaSeleccionada = null;
+
+        // Buscar la ruta con el nombre dado
+        for (Ruta ruta : rutas) {
+            if (ruta.getNombre().equalsIgnoreCase(nombreRuta)) {
+                rutaSeleccionada = ruta;
+                break;
+            }
+        }
+
+        if (rutaSeleccionada == null) {
+            System.out.println("Ruta no encontrada.");
+            return false;
+        }
+
+        List<Parada> paradasParaEliminar = new ArrayList<>();
+
+        // Buscar paradas duplicadas con otras rutas
+        for (Parada parada : rutaSeleccionada.getParadas()) {
+            for (Ruta otraRuta : rutas) {
+                if (!otraRuta.getNombre().equalsIgnoreCase(nombreRuta)) {
+                    for (Parada pOtra : otraRuta.getParadas()) {
+                        if (pOtra.getNombre().equalsIgnoreCase(parada.getNombre())) {
+                            paradasParaEliminar.add(parada);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (paradasParaEliminar.isEmpty()) {
+            System.out.println("Ruta no puede optimizarse (no hay paradas duplicadas).");
+            return false;
+        }
+
+        // Eliminar paradas duplicadas
+        rutaSeleccionada.getParadas().removeAll(paradasParaEliminar);
+
+        // También eliminamos los horarios relacionados con las paradas eliminadas
+        horarios.removeIf(h -> paradasParaEliminar.stream()
+                .anyMatch(p -> p.getNombre().equalsIgnoreCase(h.getParada())));
+
+        System.out.println("Ruta optimizada eliminando paradas duplicadas con otras rutas.");
+        return true;
+    }
+
+    public void mostrarDetallesDeTodasLasRutas() {
+        if (rutas.isEmpty()) {
+            System.out.println("No hay rutas registradas.");
+            return;
+        }
+
+        for (Ruta ruta : rutas) {
+            System.out.println("Ruta: " + ruta.getNombre());
+            for (Parada parada : ruta.getParadas()) {
+                System.out.println("  Parada: " + parada.getNombre() + " - " + parada.getUbicacion());
+                for (Horario horario : horarios) {
+                    if (horario.getParada().equalsIgnoreCase(parada.getNombre())) {
+                        System.out.println("    Horario: " + horario.getHoraInicio() + " - " + horario.getHoraFin());
+                    }
+                }
+            }
+            System.out.println("----------------------------------------");
+        }
+    }
+
 }

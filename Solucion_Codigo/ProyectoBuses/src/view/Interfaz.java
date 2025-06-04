@@ -21,10 +21,11 @@ public class Interfaz {
         int opcion = -1;
         while (opcion != 0) {
             System.out.println("\n--- Menú de Gestión de Buses ---");
-            System.out.println("1. Mostrar rutas");
+            System.out.println("1. Mostrar todas las rutas");
             System.out.println("2. Mostrar detalle de ruta");
             System.out.println("3. Eliminar una ruta");
             System.out.println("4. Añadir una nueva ruta");
+            System.out.println("5. Optimizar ruta eliminando paradas duplicadas");
             System.out.println("0. Salir");
             System.out.print("Ingrese opción: \n");
 
@@ -37,10 +38,10 @@ public class Interfaz {
 
             switch (opcion) {
                 case 1:
-                    controlador.mostrarRutas();
+                    controlador.mostrarDetallesDeTodasLasRutas();
                     break;
                 case 2:
-                    System.out.print("Ingrese nombre:");
+                    System.out.print("Ingrese nombre de la ruta: ");
                     String nombreRuta = scanner.nextLine();
                     controlador.mostrarRutaDetalle(nombreRuta);
                     break;
@@ -83,6 +84,11 @@ public class Interfaz {
 
                     controlador.agregarRuta(nuevaRuta, nuevasParadas, nuevosHorarios);
                     System.out.println("Ruta y horarios añadidos exitosamente.");
+                    break;
+                case 5:
+                    System.out.print("Ingrese nombre de la ruta a optimizar: ");
+                    String nombreOpt = scanner.nextLine();
+                    controlador.optimizarRutaPorRedundancia(nombreOpt);
                     break;
                 case 0:
                     System.out.println("Saliendo del sistema...");
