@@ -1,6 +1,7 @@
 package model;
 
 public class Horario {
+
     private String parada;
     private String horaInicio;
     private String horaFin;
@@ -10,8 +11,6 @@ public class Horario {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
-    
-    //igual aqui, de cmabiar los horarios y paradas se pondran los set necesarios
 
     public String getParada() {
         return parada;

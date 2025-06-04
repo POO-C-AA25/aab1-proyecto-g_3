@@ -2,15 +2,12 @@ package controller;
 
 import model.*;
 import java.util.*;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class SistemaGestion {
 
     private List<Ruta> rutas = new ArrayList<>();
     private List<Horario> horarios = new ArrayList<>();
 
-    // Aqui de ejemplo añadi algunas paradas y en la ruta que iran con su respectivo horarios
     public void cargarDatosIniciales() {
         Ruta ruta1 = new Ruta("Linea 1");
         ruta1.agregarParada(new Parada("Parada Norte", "Av. Universitaria"));
@@ -59,15 +56,12 @@ public class SistemaGestion {
         System.out.println("Ruta no encontrada.");
     }
 
-    // Elimina una ruta por nombre
     public boolean eliminarRuta(String nombreRuta) {
-        Iterator<Ruta> iterator = rutas.iterator();// esto nos permite recorrer
-        //una coleccion como una lista en este caso de forma segura y controlada
-        while (iterator.hasNext()) {//mientras se encuentre un elemento más obtenemos la siguiente ruta
+        Iterator<Ruta> iterator = rutas.iterator();
+        while (iterator.hasNext()) {
             Ruta ruta = iterator.next();
-            //aqui compramos cadenas ignorando mayusculas y
             if (ruta.getNombre().equalsIgnoreCase(nombreRuta)) {
-                //eliminamos la ruta con el iterator y retornamos que se elimino de forma correcta
+
                 iterator.remove();
                 return true;
             }
@@ -81,7 +75,7 @@ public class SistemaGestion {
             nuevaRuta.agregarParada(parada);
         }
         rutas.add(nuevaRuta);
-        horarios.addAll(horariosRuta); // Añade los horarios asociados a esta ruta
+        horarios.addAll(horariosRuta);
     }
 
     public boolean optimizarRutaPorRedundancia(String nombreRuta) {
@@ -121,10 +115,8 @@ public class SistemaGestion {
             return false;
         }
 
-        // Eliminar paradas duplicadas
         rutaSeleccionada.getParadas().removeAll(paradasParaEliminar);
 
-        // También eliminamos los horarios relacionados con las paradas eliminadas
         horarios.removeIf(h -> paradasParaEliminar.stream()
                 .anyMatch(p -> p.getNombre().equalsIgnoreCase(h.getParada())));
 
