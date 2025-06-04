@@ -81,7 +81,7 @@ public class SistemaGestion {
     public boolean optimizarRutaPorRedundancia(String nombreRuta) {
         Ruta rutaSeleccionada = null;
 
-        // Buscar la ruta con el nombre dado
+      
         for (Ruta ruta : rutas) {
             if (ruta.getNombre().equalsIgnoreCase(nombreRuta)) {
                 rutaSeleccionada = ruta;
@@ -96,7 +96,7 @@ public class SistemaGestion {
 
         List<Parada> paradasParaEliminar = new ArrayList<>();
 
-        // Buscar paradas duplicadas con otras rutas
+     
         for (Parada parada : rutaSeleccionada.getParadas()) {
             for (Ruta otraRuta : rutas) {
                 if (!otraRuta.getNombre().equalsIgnoreCase(nombreRuta)) {

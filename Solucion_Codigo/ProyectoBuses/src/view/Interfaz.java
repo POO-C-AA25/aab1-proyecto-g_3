@@ -25,7 +25,7 @@ public class Interfaz {
             System.out.println("2. Mostrar detalle de ruta");
             System.out.println("3. Eliminar una ruta");
             System.out.println("4. Añadir una nueva ruta");
-            System.out.println("5. Optimizar ruta eliminando paradas duplicadas");
+            System.out.println("5. Optimizar ruta");
             System.out.println("0. Salir");
             System.out.print("Ingrese opción: \n");
 
